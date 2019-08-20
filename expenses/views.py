@@ -13,10 +13,10 @@ def list(request):
 		expenses = Expenses.objects.all()
 	except Expenses.DoesNotExists:
 		raise Http404("Expenses do not exist!")
-		return 
+		return HttpResponse("Hello, World!")
 
 
 def add(request):
     if request.method == 'POST':
     	# Do something
-    return
+		return HttpResponse("Hello, World!")

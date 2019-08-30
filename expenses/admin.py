@@ -7,3 +7,4 @@ class ExpensesAdmin(admin.ModelAdmin):
     list_filter = ('date', 'payee', 'exp_type', 'reimbursable')
 
 admin.site.register(Expenses, ExpensesAdmin)
+admin.site.register(ExpenseType)

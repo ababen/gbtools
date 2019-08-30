@@ -12,6 +12,7 @@
 <table class="table">
 <thead>
 <tr>
+<th>Action</th>
 <th>Date</th>
 <th>Amount</th>
 <th>Payee</th>
@@ -19,24 +20,22 @@
 <th>Type</th>
 <th>Reimbursable?</th>
 <th>Receipt</th>
-<th>Action</th>
 </tr>
 </thead>
 <tbody>
 {% for expense in object_list %}
 <tr>
+<td>
+<a  href="{% url 'expenses_update'  expense.id  %}">edit</a>
+<a  href="{% url 'expenses_delete'  expense.id  %}">delete</a>
+</td>
 <td>{{ expense.date }}</td>
 <td>{{ expense.amount }}</td>
-<td>{{ expense.payee }}</td>
+<td><a  href="{% url 'expenses_detail'  expense.id  %}">{{ expense.payee }}</a></td>
 <td>{{ expense.note }}</td>
 <td>{{ expense.exp_type }}</td>
 <td>{{ expense.reimbursable }}</td>
 <td>{% if expense.receipt %}{{ expense.receipt }}{% endif %}</td>
-<td>
-<a  href="{% url 'expenses_detail'  expense.id  %}">details</a>
-<a  href="{% url 'expenses_update'  expense.id  %}">edit</a>
-<a  href="{% url 'expenses_delete'  expense.id  %}">delete</a>
-</td>
 </tr>
 
 {% endfor %}

@@ -10,7 +10,7 @@ import csv
 
 from .models import Expenses, ExpenseType
 
-from .forms import CreateForm
+from .forms import CreateForm, CreateExpenseType
 
 
 class ExpenseList(LoginRequiredMixin, ListView):
@@ -24,7 +24,7 @@ class ExpenseList(LoginRequiredMixin, ListView):
 class ExpenseDetail(LoginRequiredMixin, DetailView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
-    
+
     model = Expenses
     fields = '__all__'
 
@@ -40,7 +40,7 @@ class ExpenseCreate(CreateView):
 class ExpenseUpdate(LoginRequiredMixin, UpdateView):
     login_url = '/accounts/login/'
     redirect_field_name = 'redirect_to'
-    
+
     model = Expenses
     fields = '__all__'
     success_url = reverse_lazy('expenses_list')
@@ -48,8 +48,8 @@ class ExpenseUpdate(LoginRequiredMixin, UpdateView):
 
 class ExpenseDelete(LoginRequiredMixin, DeleteView):
     login_url = '/accounts/login/'
-    redirect_field_name = 'redirect_to'    
-    
+    redirect_field_name = 'redirect_to'
+
     model = Expenses
     fields = '__all__'
     success_url = reverse_lazy('expenses_list')
@@ -57,17 +57,29 @@ class ExpenseDelete(LoginRequiredMixin, DeleteView):
 
 @login_required
 def create(request):
-	if request.method == "POST":
-		form = CreateForm(request.POST)
-		if form.is_valid():
-			expense = form.save(commit=False)
-			# expense.author = request.user
-			# expense.published_date = timezone.now()
-			expense.save()
-			return redirect('expenses_list')
-	else:
-		form = CreateForm()
-	return render(request, 'expenses/expenses_create.html', {'form': form})
+    if request.method == "POST":
+        form = CreateForm(request.POST)
+        if form.is_valid():
+            expense = form.save(commit=False)
+            # expense.author = request.user
+            # expense.published_date = timezone.now()
+            expense.save()
+            return redirect('expenses_list')
+    else:
+        form = CreateForm()
+        add_exp_type = CreateExpenseType()
+    return render(request, 'expenses/expenses_create.html', {'form': form, 'add_exp_type': add_exp_type})
+
+
+@login_required
+def add_expense_type(request):
+    if request.method == 'POST':
+        form = CreateExpenseType(request.POST)
+        if form.is_valid():
+            expense_type = form.save(commit=False)
+            expense_type.save()
+            return redirect('expenses_create')
+    return HttpResponseRedirect('../create')
 
 
 @login_required
@@ -84,12 +96,3 @@ def download(request):
                          expense.reimbursable, expense.exp_type, expense.receipt])
 
     return response
-
-
-@login_required
-def add_expense_type(request):
-    if request.method == 'POST':
-        form = request.POST
-        if form.is_valid():
-            form.save()
-    return HttpResponseRedirect('../create')

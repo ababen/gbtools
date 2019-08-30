@@ -8,12 +8,10 @@
 </form>
 <br />
 <br />
-<form id='add-expense-type-form' class="post-form" action='{% url 'add-expense-type' %}' enctype="multipart/form-data" method="post"
-    accept-charset="utf-8">
-    {% csrf_token %}
+<form id='add-expense-type-form' class="post-form" action='{% url 'add-expense-type' %}' enctype="multipart/form-data" method="post" accept-charset="utf-8">{% csrf_token %}
 
-    <input name="expense-type-name" type="text">
+    {{ add_exp_type.as_p }}
 
-    <input name="{{ offer_attachment_form.prefix }}-submit" type="submit" value="Add Expense Type" />
+    <input name="add-expense-type-submit" type="submit" value="Add Expense Type" />
 </form>
 {% endblock %}

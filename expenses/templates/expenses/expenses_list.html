@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Expenses | GB_Tools
+{% endblock title %}
+
+{% block content %}
+
+<h1>Expenses</h1>
+<br>
+<div class="table-responsive">
+<table class="table">
+<thead>
+<tr>
+<th>Date</th>
+<th>Amount</th>
+<th>Payee</th>
+<th>Note</th>
+<th>Type</th>
+<th>Reimbursable?</th>
+<th>Receipt</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+{% for expense in object_list %}
+<tr>
+<td>{{ expense.date }}</td>
+<td>{{ expense.amount }}</td>
+<td>{{ expense.payee }}</td>
+<td>{{ expense.note }}</td>
+<td>{{ expense.exp_type }}</td>
+<td>{{ expense.reimbursable }}</td>
+<td>{% if expense.receipt %}{{ expense.receipt }}{% endif %}</td>
+<td>
+<a  href="{% url 'expenses_detail'  expense.id  %}">details</a>
+<a  href="{% url 'expenses_update'  expense.id  %}">edit</a>
+<a  href="{% url 'expenses_delete'  expense.id  %}">delete</a>
+</td>
+</tr>
+
+{% endfor %}
+</tbody>
+</table>
+</div>
+<br />
+<a href="{% url 'expenses_create' %}">Add Expense</a> | <a href="{% url 'download' %}">Download</a>
+
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Expense Details | GB_Tools
+{% endblock title %}
+
+{% block content %}
+
+{% block h1 %}
+  Expense Details
+{% endblock h1 %}
+
+<p>Date: {{object.date}}</p>
+<p>Amount: {{object.amount}}</p>
+<p>Payee: {{object.payee}}</p>
+<p>Note: {{object.note}}</p>
+<p>Type: {{object.exp_type}}</p>
+<p>Reimbursable?: {{object.reimbursable}}</p>
+<p>Receipt: </p>{{object.receipt}}
+<br><br>
+<img src="" alt="Receipt" />
+
+<br /><br />
+<a href="{% url 'expenses_create' %}">Add Expense</a>
+{% endblock content %}

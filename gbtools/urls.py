@@ -16,7 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from expenses import views
+
 urlpatterns = [
-    path('expenses/', include('expenses.urls')),
-	path('admin/', admin.site.urls),
+    path('', views.ExpenseList.as_view(), name='expenses_list'),
+    path('expenses/<int:pk>', views.ExpenseDetail.as_view(), name='expenses_detail'),
+    # path('create/', views.ExpenseCreate.as_view(), name='expenses_create'),
+    path('create/', views.create, name='expenses_create'),
+    path('update/<int:pk>', views.ExpenseUpdate.as_view(), name='expenses_update'),
+    path('delete/<int:pk>', views.ExpenseDelete.as_view(), name='expenses_delete'),
+    path('download', views.download, name='download'),
+    path('admin/', admin.site.urls),
 ]

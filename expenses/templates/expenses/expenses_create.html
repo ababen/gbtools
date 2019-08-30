@@ -1,9 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>New Expense</h2>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+<h2>New Expense</h2>
+<form method="POST" class="post-form">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<br />
+<br />
+<form id='add-expense-type-form' class="post-form" action='{% url 'add-expense-type' %}' enctype="multipart/form-data" method="post"
+    accept-charset="utf-8">
+    {% csrf_token %}
+
+    <input name="expense-type-name" type="text">
+
+    <input name="{{ offer_attachment_form.prefix }}-submit" type="submit" value="Add Expense Type" />
+</form>
 {% endblock %}

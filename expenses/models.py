@@ -25,4 +25,4 @@ class Expenses(models.Model):
         verbose_name_plural = "Expenses"
 
     def __str__(self):
-        return self.payee
+        return f"{self.date} {self.payee} {self.amount}"

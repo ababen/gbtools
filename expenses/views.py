@@ -1,8 +1,11 @@
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.http import HttpResponse, response
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, HttpResponse, response
+from django.shortcuts import render, redirect, reverse
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 import csv
 
 from .models import Expenses, ExpenseType
@@ -10,12 +13,18 @@ from .models import Expenses, ExpenseType
 from .forms import CreateForm
 
 
-class ExpenseList(ListView):
+class ExpenseList(LoginRequiredMixin, ListView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
+
     model = Expenses
     fields = '__all__'
 
 
-class ExpenseDetail(DetailView):
+class ExpenseDetail(LoginRequiredMixin, DetailView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
+    
     model = Expenses
     fields = '__all__'
 
@@ -28,18 +37,25 @@ class ExpenseCreate(CreateView):
 '''
 
 
-class ExpenseUpdate(UpdateView):
+class ExpenseUpdate(LoginRequiredMixin, UpdateView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
+    
     model = Expenses
     fields = '__all__'
     success_url = reverse_lazy('expenses_list')
 
 
-class ExpenseDelete(DeleteView):
+class ExpenseDelete(LoginRequiredMixin, DeleteView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'    
+    
     model = Expenses
     fields = '__all__'
     success_url = reverse_lazy('expenses_list')
 
 
+@login_required
 def create(request):
 	if request.method == "POST":
 		form = CreateForm(request.POST)
@@ -54,6 +70,7 @@ def create(request):
 	return render(request, 'expenses/expenses_create.html', {'form': form})
 
 
+@login_required
 def download(request):
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
@@ -67,3 +84,12 @@ def download(request):
                          expense.reimbursable, expense.exp_type, expense.receipt])
 
     return response
+
+
+@login_required
+def add_expense_type(request):
+    if request.method == 'POST':
+        form = request.POST
+        if form.is_valid():
+            form.save()
+    return HttpResponseRedirect('../create')

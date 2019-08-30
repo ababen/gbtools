@@ -130,5 +130,8 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = '/uploads/'
 MEDIA_URL = 'http://localhost:8000/uploads/'
 
+LOGIN_REDIRECT_URL = '/'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Activate Django-Heroku.
 django_heroku.settings(locals())

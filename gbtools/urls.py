@@ -25,6 +25,8 @@ urlpatterns = [
     path('create/', views.create, name='expenses_create'),
     path('update/<int:pk>', views.ExpenseUpdate.as_view(), name='expenses_update'),
     path('delete/<int:pk>', views.ExpenseDelete.as_view(), name='expenses_delete'),
+    path('create-expense-type/', views.add_expense_type, name='add-expense-type'),
     path('download', views.download, name='download'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]
